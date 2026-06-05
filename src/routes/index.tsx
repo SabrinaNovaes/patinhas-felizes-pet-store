@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { PawPrint, Scissors, Stethoscope, ShoppingBag, Heart, MapPin, Phone, Clock, Check, Menu, X } from "lucide-react";
+import { PawPrint, Scissors, Stethoscope, ShoppingBag, Heart, MapPin, Phone, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SiteNav } from "@/components/site-nav";
 import hero from "@/assets/hero-petshop.jpg";
 import grooming from "@/assets/grooming.jpg";
 import vet from "@/assets/vet.jpg";
@@ -21,56 +21,10 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const nav = [
-  { href: "#inicio", label: "Início" },
-  { href: "#espaco", label: "Nosso Espaço" },
-  { href: "#servicos", label: "Serviços" },
-  { href: "#produtos", label: "Produtos" },
-  { href: "#planos", label: "Planos" },
-  { href: "#contato", label: "Contato" },
-];
-
 function Index() {
-  const [open, setOpen] = useState(false);
-
   return (
     <div className="min-h-screen bg-background">
-      {/* NAV */}
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="#inicio" className="flex items-center gap-2">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground">
-              <PawPrint className="h-5 w-5" />
-            </span>
-            <span className="font-display text-xl font-semibold">Patinhas Felizes</span>
-          </a>
-          <nav className="hidden items-center gap-8 md:flex">
-            {nav.map((n) => (
-              <a key={n.href} href={n.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-                {n.label}
-              </a>
-            ))}
-          </nav>
-          <div className="hidden md:block">
-            <Button asChild><a href="#contato">Agendar visita</a></Button>
-          </div>
-          <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
-            {open ? <X /> : <Menu />}
-          </button>
-        </div>
-        {open && (
-          <div className="border-t border-border bg-background md:hidden">
-            <div className="flex flex-col gap-3 px-6 py-4">
-              {nav.map((n) => (
-                <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="text-sm text-muted-foreground">
-                  {n.label}
-                </a>
-              ))}
-              <Button asChild className="mt-2"><a href="#contato">Agendar visita</a></Button>
-            </div>
-          </div>
-        )}
-      </header>
+      <SiteNav />
 
       {/* HERO */}
       <section id="inicio" className="relative overflow-hidden" style={{ background: "var(--gradient-soft)" }}>

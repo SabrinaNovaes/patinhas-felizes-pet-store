@@ -96,7 +96,7 @@ function ProfilePage() {
         supabase.from("order_items").select("*").order("created_at", { ascending: false }),
         supabase.from("addresses").select("*").order("is_default", { ascending: false }).order("created_at", { ascending: false }),
       ]);
-      setOrders((o ?? []) as OrderRow[]);
+      setOrders((o ?? []) as unknown as OrderRow[]);
       setItems((it ?? []) as OrderItem[]);
       setAddresses((ad ?? []) as Address[]);
       setLoading(false);

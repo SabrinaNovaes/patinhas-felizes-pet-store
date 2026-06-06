@@ -72,7 +72,13 @@ export function SiteNav() {
           </Link>
           {email ? (
             <>
-              <span className="hidden max-w-[160px] truncate text-xs text-muted-foreground lg:inline">{email}</span>
+              <Link to="/perfil">
+                <Button variant="ghost" size="sm">
+                  <User className="mr-1.5 h-3.5 w-3.5" />
+                  <span className="hidden max-w-[140px] truncate lg:inline">{email}</span>
+                  <span className="lg:hidden">Perfil</span>
+                </Button>
+              </Link>
               <Button variant="outline" size="sm" onClick={logout}>
                 <LogOut className="mr-1.5 h-3.5 w-3.5" /> Sair
               </Button>
@@ -107,7 +113,12 @@ export function SiteNav() {
               Carrinho ({count})
             </Link>
             {email ? (
-              <Button variant="outline" size="sm" onClick={logout}>Sair</Button>
+              <>
+                <Link to="/perfil" onClick={() => setOpen(false)}>
+                  <Button variant="outline" size="sm" className="w-full">Meu perfil</Button>
+                </Link>
+                <Button variant="outline" size="sm" onClick={logout}>Sair</Button>
+              </>
             ) : (
               <Link to="/auth" onClick={() => setOpen(false)}>
                 <Button size="sm" className="w-full">Entrar / Cadastrar</Button>

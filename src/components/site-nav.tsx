@@ -78,12 +78,12 @@ export function SiteNav() {
               )}
             </Button>
           </Link>
-          {email ? (
+          {displayName ? (
             <>
               <Link to="/perfil">
                 <Button variant="ghost" size="sm">
                   <User className="mr-1.5 h-3.5 w-3.5" />
-                  <span className="hidden max-w-[140px] truncate lg:inline">{email}</span>
+                  <span className="hidden max-w-[140px] truncate lg:inline">{displayName}</span>
                   <span className="lg:hidden">Perfil</span>
                 </Button>
               </Link>
@@ -120,7 +120,7 @@ export function SiteNav() {
             <Link to="/carrinho" onClick={() => setOpen(false)} className="text-sm text-muted-foreground">
               Carrinho ({count})
             </Link>
-            {email ? (
+            {displayName ? (
               <>
                 <Link to="/perfil" onClick={() => setOpen(false)}>
                   <Button variant="outline" size="sm" className="w-full">Meu perfil</Button>

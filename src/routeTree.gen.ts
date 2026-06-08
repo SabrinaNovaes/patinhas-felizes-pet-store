@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProdutosRouteImport } from './routes/produtos'
 import { Route as PerfilRouteImport } from './routes/perfil'
-import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -30,11 +29,6 @@ const ProdutosRoute = ProdutosRouteImport.update({
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CarrinhoRoute = CarrinhoRouteImport.update({
@@ -57,7 +51,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRoute
   '/perfil': typeof PerfilRoute
   '/produtos': typeof ProdutosRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -66,7 +59,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRoute
   '/perfil': typeof PerfilRoute
   '/produtos': typeof ProdutosRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -76,7 +68,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRoute
   '/perfil': typeof PerfilRoute
   '/produtos': typeof ProdutosRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -87,25 +78,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/carrinho'
-    | '/checkout'
     | '/perfil'
     | '/produtos'
     | '/reset-password'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/auth'
-    | '/carrinho'
-    | '/checkout'
-    | '/perfil'
-    | '/produtos'
-    | '/reset-password'
+  to: '/' | '/auth' | '/carrinho' | '/perfil' | '/produtos' | '/reset-password'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/carrinho'
-    | '/checkout'
     | '/perfil'
     | '/produtos'
     | '/reset-password'
@@ -115,7 +97,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   CarrinhoRoute: typeof CarrinhoRoute
-  CheckoutRoute: typeof CheckoutRoute
   PerfilRoute: typeof PerfilRoute
   ProdutosRoute: typeof ProdutosRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -142,13 +123,6 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/carrinho': {
@@ -179,7 +153,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   CarrinhoRoute: CarrinhoRoute,
-  CheckoutRoute: CheckoutRoute,
   PerfilRoute: PerfilRoute,
   ProdutosRoute: ProdutosRoute,
   ResetPasswordRoute: ResetPasswordRoute,
@@ -187,3 +160,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

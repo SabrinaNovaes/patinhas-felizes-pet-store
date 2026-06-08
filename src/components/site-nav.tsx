@@ -18,13 +18,21 @@ const links = [
 export function SiteNav() {
   const { count } = useCart();
   const navigate = useNavigate();
-  const [email, setEmail] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
+  const pickName = (u: { user_metadata?: Record<string, unknown> | null; email?: string | null } | null | undefined) => {
+    if (!u) return null;
+    const m = (u.user_metadata ?? {}) as Record<string, unknown>;
+    const full = (m.name || m.full_name || m.display_name) as string | undefined;
+    if (full && typeof full === "string") return full.split(" ")[0];
+    return u.email?.split("@")[0] ?? null;
+  };
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setEmail(data.session?.user?.email ?? null));
+    supabase.auth.getSession().then(({ data }) => setDisplayName(pickName(data.session?.user ?? null)));
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setEmail(session?.user?.email ?? null);
+      setDisplayName(pickName(session?.user ?? null));
     });
     return () => sub.subscription.unsubscribe();
   }, []);

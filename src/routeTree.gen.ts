@@ -12,10 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProdutosRouteImport } from './routes/produtos'
 import { Route as PerfilRouteImport } from './routes/perfil'
-import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CheckoutPagamentoRouteImport } from './routes/checkout.pagamento'
+import { Route as CheckoutEnderecoRouteImport } from './routes/checkout.endereco'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -30,11 +31,6 @@ const ProdutosRoute = ProdutosRouteImport.update({
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CarrinhoRoute = CarrinhoRouteImport.update({
@@ -52,34 +48,47 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutPagamentoRoute = CheckoutPagamentoRouteImport.update({
+  id: '/checkout/pagamento',
+  path: '/checkout/pagamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutEnderecoRoute = CheckoutEnderecoRouteImport.update({
+  id: '/checkout/endereco',
+  path: '/checkout/endereco',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRoute
   '/perfil': typeof PerfilRoute
   '/produtos': typeof ProdutosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/checkout/endereco': typeof CheckoutEnderecoRoute
+  '/checkout/pagamento': typeof CheckoutPagamentoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRoute
   '/perfil': typeof PerfilRoute
   '/produtos': typeof ProdutosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/checkout/endereco': typeof CheckoutEnderecoRoute
+  '/checkout/pagamento': typeof CheckoutPagamentoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRoute
   '/perfil': typeof PerfilRoute
   '/produtos': typeof ProdutosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/checkout/endereco': typeof CheckoutEnderecoRoute
+  '/checkout/pagamento': typeof CheckoutPagamentoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,38 +96,42 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/carrinho'
-    | '/checkout'
     | '/perfil'
     | '/produtos'
     | '/reset-password'
+    | '/checkout/endereco'
+    | '/checkout/pagamento'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/carrinho'
-    | '/checkout'
     | '/perfil'
     | '/produtos'
     | '/reset-password'
+    | '/checkout/endereco'
+    | '/checkout/pagamento'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/carrinho'
-    | '/checkout'
     | '/perfil'
     | '/produtos'
     | '/reset-password'
+    | '/checkout/endereco'
+    | '/checkout/pagamento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   CarrinhoRoute: typeof CarrinhoRoute
-  CheckoutRoute: typeof CheckoutRoute
   PerfilRoute: typeof PerfilRoute
   ProdutosRoute: typeof ProdutosRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  CheckoutEnderecoRoute: typeof CheckoutEnderecoRoute
+  CheckoutPagamentoRoute: typeof CheckoutPagamentoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -144,13 +157,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PerfilRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/carrinho': {
       id: '/carrinho'
       path: '/carrinho'
@@ -172,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/pagamento': {
+      id: '/checkout/pagamento'
+      path: '/checkout/pagamento'
+      fullPath: '/checkout/pagamento'
+      preLoaderRoute: typeof CheckoutPagamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/endereco': {
+      id: '/checkout/endereco'
+      path: '/checkout/endereco'
+      fullPath: '/checkout/endereco'
+      preLoaderRoute: typeof CheckoutEnderecoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -179,10 +199,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   CarrinhoRoute: CarrinhoRoute,
-  CheckoutRoute: CheckoutRoute,
   PerfilRoute: PerfilRoute,
   ProdutosRoute: ProdutosRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  CheckoutEnderecoRoute: CheckoutEnderecoRoute,
+  CheckoutPagamentoRoute: CheckoutPagamentoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

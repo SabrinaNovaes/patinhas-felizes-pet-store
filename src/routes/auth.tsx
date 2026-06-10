@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { PawPrint, X } from "lucide-react";
+import { PawPrint, X, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,6 +31,23 @@ const loginSchema = z.object({
   password: z.string().min(1, "Informe a senha"),
 });
 const forgotSchema = z.object({ email: z.string().trim().email("E-mail inválido") });
+
+function PasswordInput(props: React.ComponentProps<typeof Input>) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="relative">
+      <Input {...props} type={show ? "text" : "password"} className="pr-10" />
+      <button
+        type="button"
+        onClick={() => setShow((s) => !s)}
+        aria-label={show ? "Ocultar senha" : "Mostrar senha"}
+        className="absolute right-2 top-1/2 -translate-y-1/2 grid h-7 w-7 place-items-center rounded text-muted-foreground hover:text-foreground"
+      >
+        {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+      </button>
+    </div>
+  );
+}
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -170,7 +187,7 @@ function AuthPage() {
                           Esqueci minha senha
                         </button>
                       </div>
-                      <Input id="login-password" name="password" type="password" required autoComplete="current-password" />
+                      <PasswordInput id="login-password" name="password" required autoComplete="current-password" />
                     </div>
                     <Button type="submit" className="w-full" disabled={loading}>
                       {loading ? "Entrando..." : "Entrar"}
@@ -190,7 +207,7 @@ function AuthPage() {
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="signup-password">Senha</Label>
-                      <Input id="signup-password" name="password" type="password" required minLength={6} autoComplete="new-password" />
+                      <PasswordInput id="signup-password" name="password" required minLength={6} autoComplete="new-password" />
                     </div>
                     <Button type="submit" className="w-full" disabled={loading}>
                       {loading ? "Criando..." : "Criar conta"}

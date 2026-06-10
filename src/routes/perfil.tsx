@@ -14,6 +14,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { SiteNav } from "@/components/site-nav";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart, formatBRL } from "@/lib/cart-context";
+import { PRODUCTS } from "@/lib/products";
+
+const productImage = (id: string, fallback?: string) =>
+  PRODUCTS.find((p) => p.id === id)?.image ?? fallback ?? "";
 import { fetchCep } from "@/lib/shipping";
 import { toast } from "sonner";
 
@@ -190,7 +194,7 @@ function OrdersTab({ orders, items }: { orders: OrderRow[]; items: OrderItem[] }
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {oi.map((i) => (
                 <div key={i.id} className="flex items-center gap-3 rounded-lg border border-border p-3">
-                  <img src={i.product_image} alt={i.product_name} className="h-14 w-14 rounded-md object-cover" />
+                  <img src={productImage(i.product_id, i.product_image)} alt={i.product_name} loading="lazy" className="h-14 w-14 shrink-0 rounded-md object-cover" />
                   <div className="flex-1 text-sm">
                     <div className="font-medium leading-tight">{i.product_name}</div>
                     <div className="text-xs text-muted-foreground">{i.qty}x {formatBRL(Number(i.unit_price))}</div>
@@ -237,7 +241,7 @@ function FrequentTab({ items }: { items: OrderItem[] }) {
       {aggregated.map(({ item, total, orders }, idx) => (
         <Card key={item.product_id} className="overflow-hidden p-0">
           <div className="relative">
-            <img src={item.product_image} alt={item.product_name} className="h-40 w-full object-cover" />
+            <img src={productImage(item.product_id, item.product_image)} alt={item.product_name} loading="lazy" className="h-40 w-full object-cover" />
             {idx === 0 && (
               <Badge className="absolute left-3 top-3 gap-1"><Star className="h-3 w-3 fill-current" />Favorito</Badge>
             )}
@@ -258,7 +262,7 @@ function FrequentTab({ items }: { items: OrderItem[] }) {
                     name: item.product_name,
                     category: item.category as never,
                     price: Number(item.unit_price),
-                    image: item.product_image,
+                    image: productImage(item.product_id, item.product_image),
                     description: "",
                   });
                   toast.success("Adicionado ao carrinho");

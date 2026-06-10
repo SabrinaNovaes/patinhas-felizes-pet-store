@@ -114,17 +114,17 @@ function CartPage() {
                 </Card>
               ))}
             </div>
+          </div>
 
-            {/* CEP / shipping */}
-            <Card className="p-6">
+
+          {/* Summary */}
+          <Card className="h-fit space-y-6 p-6">
+            <div>
               <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
                 <Truck className="h-5 w-5 text-primary" /> Calcular frete
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Informe seu CEP para calcular o valor do frete.
-              </p>
-              <div className="mt-4 flex flex-wrap items-end gap-3">
-                <div className="space-y-1">
+              <div className="mt-3 flex items-end gap-2">
+                <div className="flex-1 space-y-1">
                   <Label htmlFor="cep">CEP</Label>
                   <Input
                     id="cep"
@@ -132,24 +132,22 @@ function CartPage() {
                     onChange={(e) => setCep(e.target.value)}
                     placeholder="00000-000"
                     maxLength={9}
-                    className="w-40"
                   />
                 </div>
                 <Button type="button" onClick={handleCep} disabled={loadingCep}>
                   {loadingCep ? <Loader2 className="h-4 w-4 animate-spin" /> : "Calcular"}
                 </Button>
-                {uf && city && (
-                  <p className="text-sm text-muted-foreground">
-                    Entrega para <span className="font-medium text-foreground">{city}/{uf}</span>
-                  </p>
-                )}
               </div>
-            </Card>
+              {uf && city && (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Entrega para <span className="font-medium text-foreground">{city}/{uf}</span>
+                </p>
+              )}
+            </div>
 
-            {/* Payment */}
-            <Card className="p-6">
+            <div>
               <h2 className="font-display text-lg font-semibold">Forma de pagamento</h2>
-              <RadioGroup value={payment} onValueChange={(v) => setPayment(v as PaymentMethod)} className="mt-4 space-y-2">
+              <RadioGroup value={payment} onValueChange={(v) => setPayment(v as PaymentMethod)} className="mt-3 space-y-2">
                 {[
                   { v: "pix", label: "Pix", icon: QrCode, desc: "Aprovação imediata" },
                   { v: "boleto", label: "Boleto", icon: FileText, desc: "Vence em 3 dias úteis" },
@@ -159,52 +157,51 @@ function CartPage() {
                   <Label
                     key={o.v}
                     htmlFor={`p-${o.v}`}
-                    className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ${payment === o.v ? "border-primary bg-secondary/40" : "border-border"}`}
+                    className={`flex cursor-pointer items-center gap-3 rounded-lg border p-2.5 transition-colors ${payment === o.v ? "border-primary bg-secondary/40" : "border-border"}`}
                   >
                     <RadioGroupItem value={o.v} id={`p-${o.v}`} />
-                    <o.icon className="h-5 w-5 text-primary" />
+                    <o.icon className="h-4 w-4 text-primary" />
                     <div className="flex-1">
                       <div className="text-sm font-medium">{o.label}</div>
-                      <div className="text-xs text-muted-foreground">{o.desc}</div>
+                      <div className="text-[11px] text-muted-foreground">{o.desc}</div>
                     </div>
                   </Label>
                 ))}
               </RadioGroup>
-            </Card>
-          </div>
-
-          {/* Summary */}
-          <Card className="h-fit p-6">
-            <h2 className="font-display text-lg font-semibold">Resumo</h2>
-            <div className="mt-4 space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatBRL(subtotal)}</span></div>
-              <div className="flex justify-between">
-                <span className="flex items-center gap-1 text-muted-foreground"><Truck className="h-3.5 w-3.5" />Frete</span>
-                <span>
-                  {uf
-                    ? shipping === 0
-                      ? <span className="font-medium text-primary">Grátis</span>
-                      : formatBRL(shipping)
-                    : "Informe o CEP"}
-                </span>
-              </div>
-              {subtotal < 299 && (
-                <p className="text-xs text-muted-foreground">Frete grátis acima de {formatBRL(299)}</p>
-              )}
-              <div className="my-3 border-t border-border" />
-              <div className="flex justify-between text-base">
-                <span className="font-semibold">Total</span>
-                <span className="font-display text-2xl font-semibold text-primary">{formatBRL(total)}</span>
-              </div>
             </div>
 
-            <Button className="mt-5 w-full" size="lg" onClick={goToPayment} disabled={!uf}>
-              Finalizar compra
-            </Button>
+            <div>
+              <h2 className="font-display text-lg font-semibold">Resumo</h2>
+              <div className="mt-3 space-y-2 text-sm">
+                <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatBRL(subtotal)}</span></div>
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-1 text-muted-foreground"><Truck className="h-3.5 w-3.5" />Frete</span>
+                  <span>
+                    {uf
+                      ? shipping === 0
+                        ? <span className="font-medium text-primary">Grátis</span>
+                        : formatBRL(shipping)
+                      : "Informe o CEP"}
+                  </span>
+                </div>
+                {subtotal < 299 && (
+                  <p className="text-xs text-muted-foreground">Frete grátis acima de {formatBRL(299)}</p>
+                )}
+                <div className="my-3 border-t border-border" />
+                <div className="flex justify-between text-base">
+                  <span className="font-semibold">Total</span>
+                  <span className="font-display text-2xl font-semibold text-primary">{formatBRL(total)}</span>
+                </div>
+              </div>
 
-            <Link to="/produtos">
-              <Button variant="outline" className="mt-2 w-full">Continuar comprando</Button>
-            </Link>
+              <Button className="mt-5 w-full" size="lg" onClick={goToPayment} disabled={!uf}>
+                Finalizar compra
+              </Button>
+
+              <Link to="/produtos">
+                <Button variant="outline" className="mt-2 w-full">Continuar comprando</Button>
+              </Link>
+            </div>
           </Card>
         </div>
       </section>

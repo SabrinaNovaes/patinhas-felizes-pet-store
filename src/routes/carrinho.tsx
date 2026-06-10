@@ -114,64 +114,8 @@ function CartPage() {
                 </Card>
               ))}
             </div>
-
-            {/* CEP / shipping */}
-            <Card className="p-6">
-              <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
-                <Truck className="h-5 w-5 text-primary" /> Calcular frete
-              </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Informe seu CEP para calcular o valor do frete.
-              </p>
-              <div className="mt-4 flex flex-wrap items-end gap-3">
-                <div className="space-y-1">
-                  <Label htmlFor="cep">CEP</Label>
-                  <Input
-                    id="cep"
-                    value={cep}
-                    onChange={(e) => setCep(e.target.value)}
-                    placeholder="00000-000"
-                    maxLength={9}
-                    className="w-40"
-                  />
-                </div>
-                <Button type="button" onClick={handleCep} disabled={loadingCep}>
-                  {loadingCep ? <Loader2 className="h-4 w-4 animate-spin" /> : "Calcular"}
-                </Button>
-                {uf && city && (
-                  <p className="text-sm text-muted-foreground">
-                    Entrega para <span className="font-medium text-foreground">{city}/{uf}</span>
-                  </p>
-                )}
-              </div>
-            </Card>
-
-            {/* Payment */}
-            <Card className="p-6">
-              <h2 className="font-display text-lg font-semibold">Forma de pagamento</h2>
-              <RadioGroup value={payment} onValueChange={(v) => setPayment(v as PaymentMethod)} className="mt-4 space-y-2">
-                {[
-                  { v: "pix", label: "Pix", icon: QrCode, desc: "Aprovação imediata" },
-                  { v: "boleto", label: "Boleto", icon: FileText, desc: "Vence em 3 dias úteis" },
-                  { v: "credito", label: "Cartão de Crédito", icon: CreditCard, desc: "Em até 6x sem juros" },
-                  { v: "debito", label: "Cartão de Débito", icon: Banknote, desc: "À vista no débito" },
-                ].map((o) => (
-                  <Label
-                    key={o.v}
-                    htmlFor={`p-${o.v}`}
-                    className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ${payment === o.v ? "border-primary bg-secondary/40" : "border-border"}`}
-                  >
-                    <RadioGroupItem value={o.v} id={`p-${o.v}`} />
-                    <o.icon className="h-5 w-5 text-primary" />
-                    <div className="flex-1">
-                      <div className="text-sm font-medium">{o.label}</div>
-                      <div className="text-xs text-muted-foreground">{o.desc}</div>
-                    </div>
-                  </Label>
-                ))}
-              </RadioGroup>
-            </Card>
           </div>
+
 
           {/* Summary */}
           <Card className="h-fit space-y-6 p-6">
